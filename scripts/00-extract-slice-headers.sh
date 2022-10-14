@@ -10,7 +10,7 @@
 for item in P16S/* ; do 
 	
 	outfile=P16S/`basename $item .csv`.stripped.csv
-	tail -n+37 $item > $outfile
+	tail -n+37 $item | grep -v "END" | grep -v "DBAR" > $outfile
 
 done
 
@@ -18,6 +18,6 @@ done
 for item in P16N/* ; do 
 
 	outfile=P16N/`basename $item .csv`.stripped.csv	
-	tail -n+53 $item > $outfile
+	tail -n+53 $item | grep -v "END" | grep -v "DBAR" > $outfile
 
 done
