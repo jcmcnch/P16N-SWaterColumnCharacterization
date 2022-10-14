@@ -4,6 +4,7 @@ library(oce)
 
 #read in CTD file
 d <- read.csv(args[1], sep=',')
+d[d==-999] <- NA
 
 #get CTD basics
 salinity <- d[["CTDSAL"]]
@@ -24,11 +25,12 @@ ctd <- oceSetData(ctd, 'CTD Oxygen (µm/kg)', value=ctdoxy)
 ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 
 #make plot
-pdf(args[2], width=9,height=7)
+ylimit=strtoi(args[2])
+pdf(args[3], width=9,height=7)
 #multiple columns
 par(mfrow=c(1,6), mar=c(0,0,0,0))
 #plot templerature profile
-plotProfile(ctd, xtype="temperature", ylim=c(300, 0), xlim=c(0,25))
+plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
 pressure <- ctd[["pressure"]]
 #define MLD with two different methods and plot as line
@@ -39,7 +41,7 @@ for (criterion in c(0.1, 0.5)) {
     abline(h=pressure[MLDindex], lwd=2, lty="dashed")
 }
 #plot other data sources
-plotProfile(ctd, xtype="Chlorophyll Fluorescence (05-V DC)", ylim=c(300, 0), col="darkgreen", xlab="")
-#plotProfile(ctd, xtype="CTD Oxygen (µM)", ylim=c(300, 0), col="darkblue", xlab="")
-#plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(300, 0), col="red", xlab="")
+plotProfile(ctd, xtype="Chlorophyll Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
+plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
+plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
 dev.off()
