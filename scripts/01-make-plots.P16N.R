@@ -13,7 +13,6 @@ temperature <- d[["CTDTMP"]]
 pressure <- d[["CTDPRS"]]
 
 #additional data
-chlfluor <- d[["CTDFLUOR"]]
 ctdoxy <- d[["CTDOXY"]]
 beamatt <- d[["CTDBEAMCP"]]
 
@@ -21,7 +20,6 @@ beamatt <- d[["CTDBEAMCP"]]
 ctd <- as.ctd(salinity, temperature, pressure)
 
 #add additional data to CTD object
-ctd <- oceSetData(ctd, 'Chlorophyll Fluorescence (0-5V DC)', value=chlfluor)
 ctd <- oceSetData(ctd, 'CTD Oxygen (µm/kg)', value=ctdoxy)
 ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 
@@ -29,7 +27,7 @@ ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 ylimit=as.double(args[2])
 pdf(args[4], width=7,height=9)
 #multiple columns
-par(mfrow=c(1,4), mar=c(1,1,1,1), oma=c(10,1,1,1))
+par(mfrow=c(1,3), mar=c(1,1,1,1), oma=c(10,1,1,1))
 #plot templerature profile
 plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
@@ -42,7 +40,6 @@ for (criterion in c(0.1, 0.5)) {
     abline(h=pressure[MLDindex], lwd=2, lty="dashed")
 }
 #plot other data sources
-plotProfile(ctd, xtype="Chlorophyll Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
 plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
 plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
 
