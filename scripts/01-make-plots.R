@@ -46,6 +46,9 @@ plotProfile(ctd, xtype="Chlorophyll Fluorescence (0-5V DC)", ylim=c(ylimit, 0), 
 plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
 plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
 
-mtext(args[3], outer=TRUE, adj=0.5, padj=1, side=1)
+#source = https://stackoverflow.com/questions/7367138/text-wrap-for-plot-titles
+wrap_strings <- function(vector_of_strings,width){sapply(vector_of_strings,FUN=function(x){paste(strwrap(x,width=width), collapse="\n")})}
+
+mtext(wrap_strings(args[3], 30), outer=TRUE, adj=0.5, padj=1, side=1)
 
 dev.off()
