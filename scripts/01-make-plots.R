@@ -4,6 +4,7 @@ library(oce)
 
 #read in CTD file
 d <- read.csv(args[1], sep=',')
+#remove null values
 d[d==-999] <- NA
 
 #get CTD basics
@@ -26,9 +27,9 @@ ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 
 #make plot
 ylimit=strtoi(args[2])
-pdf(args[3], width=9,height=7)
+pdf(args[4], width=7,height=9)
 #multiple columns
-par(mfrow=c(1,6), mar=c(0,0,0,0))
+par(mfrow=c(1,4), mar=c(1,1,1,1), oma=c(10,1,1,1))
 #plot templerature profile
 plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
@@ -44,4 +45,7 @@ for (criterion in c(0.1, 0.5)) {
 plotProfile(ctd, xtype="Chlorophyll Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
 plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
 plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
+
+mtext(args[3], outer=TRUE, adj=0.5, padj=1, side=1)
+
 dev.off()
