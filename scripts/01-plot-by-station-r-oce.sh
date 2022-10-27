@@ -51,7 +51,7 @@ for station in `tail -n+2 $infile | cut -f1 | cut -f1-2 -d- | sort | uniq`; do
 
                 outfile=CTD-plots/$station.$filestem.CTDprofile.pdf
 
-                ./scripts/01-make-plots.P16N.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile $infile
+                ./scripts/01-make-plots.P16N.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile input/P16N.$station.tsv
 
         done
 

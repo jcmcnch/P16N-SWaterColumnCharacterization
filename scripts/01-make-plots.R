@@ -13,6 +13,7 @@ mdata <- read.csv(args[5], sep='\t', header=TRUE)
 mdata[mdata==-999] <- NA
 dnaconc <- mdata[["DNA_extract_conc_ng.µL"]]
 eukfrac <- mdata[["EUKfrac"]]
+nitrate <- mdata[["Nitrate"]]
 
 #transform metadata into another CTD object so R-oce can understand how to plot it
 salinity.bottle <- mdata[["CTDSAL"]]
@@ -22,6 +23,7 @@ mdata <- as.ctd(salinity.bottle, temperature.bottle, pressure.bottle)
 #add additional data to CTD object
 mdata <- oceSetData(mdata, '[DNA] (ng/µL)', value=dnaconc)
 mdata <- oceSetData(mdata, 'Fraction 18S SSU rRNA', value=eukfrac)
+mdata <- oceSetData(mdata, 'Nitrate (µm/kg)', value=nitrate)
 
 #get CTD basics
 salinity <- d[["CTDSAL"]]
@@ -37,15 +39,15 @@ beamatt <- d[["CTDBEAMCP"]]
 ctd <- as.ctd(salinity, temperature, pressure)
 
 #add additional data to CTD object
-ctd <- oceSetData(ctd, 'Chlorophyll Fluorescence (0-5V DC)', value=chlfluor)
+ctd <- oceSetData(ctd, 'Chl. Fluorescence (0-5V DC)', value=chlfluor)
 ctd <- oceSetData(ctd, 'CTD Oxygen (µm/kg)', value=ctdoxy)
 ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 
 #make plot
 ylimit=as.double(args[2])
-pdf(args[4], width=7,height=9)
+pdf(args[4], width=10,height=9)
 #multiple columns
-par(mfrow=c(1,6), mar=c(1,1,1,1), oma=c(10,1,1,1))
+par(mfrow=c(1,7), mar=c(1,1,1,1), oma=c(10,1,1,1))
 #plot templerature profile
 plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
@@ -58,11 +60,12 @@ for (criterion in c(0.1, 0.5)) {
     abline(h=pressure[MLDindex], lwd=2, lty="dashed")
 }
 #plot other data sources
-plotProfile(ctd, xtype="Chlorophyll Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
+plotProfile(ctd, xtype="Chl. Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
 plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
 plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
 plotProfile(mdata, xtype="[DNA] (ng/µL)", ylim=c(ylimit, 0), col="orange", type="b")
 plotProfile(mdata, xtype="Fraction 18S SSU rRNA", ylim=c(ylimit, 0), col="green", type="b")
+plotProfile(mdata, xtype="Nitrate (µm/kg)", ylim=c(ylimit, 0), col="blue", type="b")
 
 #source = https://stackoverflow.com/questions/7367138/text-wrap-for-plot-titles
 wrap_strings <- function(vector_of_strings,width){sapply(vector_of_strings,FUN=function(x){paste(strwrap(x,width=width), collapse="\n")})}
