@@ -63,9 +63,9 @@ for (criterion in c(0.1, 0.5)) {
 plotProfile(ctd, xtype="Chl. Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
 plotProfile(ctd, xtype="CTD Oxygen (µm/kg)", ylim=c(ylimit, 0), col="darkblue")
 plotProfile(ctd, xtype="Beam Attenuation (1/m)", ylim=c(ylimit, 0), col="red")
+plotProfile(mdata, xtype="Nitrate (µm/kg)", ylim=c(ylimit, 0), col="blue", type="b")
 plotProfile(mdata, xtype="[DNA] (ng/µL)", ylim=c(ylimit, 0), col="orange", type="b")
 plotProfile(mdata, xtype="Fraction 18S SSU rRNA", ylim=c(ylimit, 0), col="green", type="b")
-plotProfile(mdata, xtype="Nitrate (µm/kg)", ylim=c(ylimit, 0), col="blue", type="b")
 
 #source = https://stackoverflow.com/questions/7367138/text-wrap-for-plot-titles
 wrap_strings <- function(vector_of_strings,width){sapply(vector_of_strings,FUN=function(x){paste(strwrap(x,width=width), collapse="\n")})}
