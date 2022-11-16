@@ -53,7 +53,7 @@ plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
 pressure <- ctd[["pressure"]]
 #define MLD with two different methods and plot as line
-for (criterion in c(0.1, 0.5)) {
+for (criterion in c(0.5, 0.8)) {
     inMLD <- abs(temperature[1]-temperature) < criterion
     MLDindex <- which.min(inMLD)
     MLDpressure <- pressure[MLDindex]
