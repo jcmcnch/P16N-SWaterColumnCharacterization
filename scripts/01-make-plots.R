@@ -43,19 +43,22 @@ ctd <- oceSetData(ctd, 'Chl. Fluorescence (0-5V DC)', value=chlfluor)
 ctd <- oceSetData(ctd, 'CTD Oxygen (µm/kg)', value=ctdoxy)
 ctd <- oceSetData(ctd, 'Beam Attenuation (1/m)', value=beamatt)
 
-#calculate sigmaTheta and add to CTD object
+#calculate sigmaTheta, buoyancy frequency and add to CTD object
 sigmaTheta <- swSigmaTheta(ctd)
 ctd <- oceSetData(ctd, "density", value=sigmaTheta)
+N2 <- swN2(ctd)
+ctd <- oceSetData(ctd, "N2", value=N2)
 
 #make plot
 ylimit=as.double(args[2])
 pdf(args[4], width=12,height=9)
 #multiple columns
-par(mfrow=c(1,8), mar=c(1,1,1,1), oma=c(10,1,1,1))
+par(mfrow=c(1,9), mar=c(1,1,1,1), oma=c(10,1,1,1))
 #plot templerature profile
 plotProfile(ctd, xtype="temperature", ylim=c(ylimit, 0), xlim=c(0,25))
 temperature <- ctd[["temperature"]]
 pressure <- ctd[["pressure"]]
+density <- ctd[["density"]]
 
 #define MLD with two different methods and plot as line
 for (criterion in c(0.5, 0.8)) {
@@ -67,6 +70,8 @@ for (criterion in c(0.5, 0.8)) {
 
 #plot sigma theta with line as above
 plotProfile(ctd, xtype="density", ylim=c(ylimit, 0))
+str(density)
+str(temperature)
 for (criterion in c(0.25)) {
     inSigmaTheta <- abs(density[1]-density) < criterion
     DensityIndex <- which.min(inSigmaTheta)
@@ -76,6 +81,8 @@ for (criterion in c(0.25)) {
 
 #plot buoyant density with maximum line
 plotProfile(ctd, xtype="N2", ylim=c(ylimit, 0))
+maxN2 <- which.max(N2)
+abline(h=pressure[maxN2], lwd=2, lty="dashed")
 
 #plot other data sources
 plotProfile(ctd, xtype="Chl. Fluorescence (0-5V DC)", ylim=c(ylimit, 0), col="darkgreen")
