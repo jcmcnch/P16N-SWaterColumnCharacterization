@@ -70,8 +70,6 @@ for (criterion in c(0.5, 0.8)) {
 
 #plot sigma theta with line as above
 plotProfile(ctd, xtype="density", ylim=c(ylimit, 0))
-str(density)
-str(temperature)
 for (criterion in c(0.25)) {
     inSigmaTheta <- abs(density[1]-density) < criterion
     DensityIndex <- which.min(inSigmaTheta)
@@ -81,6 +79,7 @@ for (criterion in c(0.25)) {
 
 #plot buoyant density with maximum line
 plotProfile(ctd, xtype="N2", ylim=c(ylimit, 0))
+N2 <- ctd[["N2"]]
 maxN2 <- which.max(N2)
 abline(h=pressure[maxN2], lwd=2, lty="dashed")
 
