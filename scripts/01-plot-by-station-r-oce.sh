@@ -9,10 +9,11 @@ for station in `tail -n+2 $infile | cut -f1 | cut -f1-2 -d- | sort | uniq`; do
        
 	stationNo=`echo $station | cut -f2 -d- | sed 's/S//' | sed 's/^0//g'`
 	paddedStationNo=`printf  "%05d" ${stationNo#0}`
-	maxDepth=`grep $station $infile | cut -f7 | sort -gr | head -n1`
+	maxDepth=`grep $station $infile | cut -f9 | sort -gr | head -n1`
+	echo $maxDepth
 
-	latTSV=`grep $station $infile | cut -f5 | sort | uniq`
-	lonTSV=`grep $station $infile | cut -f6 | sort | uniq`
+	latTSV=`grep $station $infile | cut -f6 | sort | uniq`
+	lonTSV=`grep $station $infile | cut -f7 | sort | uniq`
 
 	#add loop to account for multiple CTD casts per station
 	for inputFile in `ls P16S/33RR200501_$paddedStationNo*stripped.csv`; do
@@ -24,7 +25,7 @@ for station in `tail -n+2 $infile | cut -f1 | cut -f1-2 -d- | sort | uniq`; do
 	
 		outfile=CTD-plots/$station.$filestem.CTDprofile.pdf
 
-		./scripts/01-make-plots.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile input/P16S.$station.tsv
+		echo ./scripts/01-make-plots.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile input/P16S.$station.tsv
 	
 	done 
 
@@ -51,7 +52,7 @@ for station in `tail -n+2 $infile | cut -f1 | cut -f1-2 -d- | sort | uniq`; do
 
                 outfile=CTD-plots/$station.$filestem.CTDprofile.pdf
 
-                ./scripts/01-make-plots.P16N.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile input/P16N.$station.tsv
+                echo ./scripts/01-make-plots.P16N.R $inputFile $maxDepth "CTD Profile for $station (ASVlatlong=$latTSV,$lonTSV; CTDlatlong=$latCSV,$lonCSV)" $outfile input/P16N.$station.tsv
 
         done
 
