@@ -3,8 +3,8 @@
 #NOTE: CTD data sourced from https://cchdo.ucsd.edu/
 
 #extract csvs from zip files
-#mkdir P16N ; unzip P16N_CTD_profiles_325020060213_ct1.zip ; mv *csv P16N
-#mkdir P16S ; unzip P16S_CTD_profiles_33RR200501_ct1.zip ; mv *csv P16S
+mkdir P16N ; cd input ; unzip P16N_CTD_profiles_325020060213_ct1.zip ; mv *csv ../P16N ; cd ..
+mkdir P16S ; cd input ; unzip P16S_CTD_profiles_33RR200501_ct1.zip ; mv *csv ../P16S ; cd ..
  
 #strip off header lines that aren't needed
 for item in P16S/* ; do 
